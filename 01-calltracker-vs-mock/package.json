@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "tap-spec": "^5.0.0"
+  },
+  "name": "01-calltracker-vs-mock",
+  "version": "1.0.0",
+  "main": "index.test.js",
+  "devDependencies": {},
+  "type": "module",
+  "scripts": {
+    "test": ""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
