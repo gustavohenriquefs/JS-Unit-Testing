@@ -1,5 +1,6 @@
-import { describe, it, beforeEach, before, afterEach } from 'node:test'
+import { describe, it, beforeEach, before, afterEach, mock } from 'node:test'
 import { deepStrictEqual } from 'node:assert'
+import { setTimeout } from 'node:timers/promises'
 
 function sum(a, b) {
   return a + b
@@ -26,8 +27,27 @@ describe('Using Node.js only!!', () => {
     deepStrictEqual(current, expected)
   })
 
+  // Isso é um SPY = monitorar as chamadas de uma função
+  it('it should sum values after a second', async (context) => {
+    const timer = {
+      delay(ms) {
+        return setTimeout(ms)
+      }, 
+      async sumDelayed(num1, num2) {
+        await timer.delay(1000)
+    
+        return sum(num1, num2)
+      }
+    }
+    
+    context.mock.method(timer, timer.delay.name)
 
-  it.skip('it should sum three values')
+    const result = await timer.sumDelayed(4, 5)
 
-  it('it should sum four values', { only: true })
+    console.log('exected!!', result)
+
+    deepStrictEqual(timer.delay.mock.length, 1)
+    deepStrictEqual(timer.delay.mock.calls[0].argumentsm, [1000])
+    deepStrictEqual(result, 9);
+  })
 })
