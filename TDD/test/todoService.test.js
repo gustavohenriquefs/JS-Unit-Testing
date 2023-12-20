@@ -101,7 +101,28 @@ describe('todoService', () => {
       expect(todoService.todoRepository.create.calledOnceWithExactly(expectedCallWith)).to.be.ok
     })
   
-    it('should save todo item with pendig status')
+    it('should save todo item with pendig status', () => {
+      const properties = {
+        text: 'I must walk my dog',
+        when: new Date('2020-12-30 12:00:00 GMT-0')
+      }
+
+      const data = new Todo(properties)
+      Reflect.set(data, "id", "00001")
+
+      const today = new Date("2020-12-29")
+      sandbox.useFakeTimers(today.getTime())
+
+      todoService.create(data)
+
+      const expectedCallWith = {
+          ...properties,
+          id: data.id,
+          status: "pending"
+      }
+      
+      expect(todoService.todoRepository.create.calledOnceWithExactly(expectedCallWith)).to.be.ok
+    })
   })
 
 })
